@@ -39,6 +39,21 @@ public class MockEmployeeController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response.handled()));
     }
 
+    @GetMapping("/search/{name}")
+    public Response<List<MockEmployee>> getEmployeesByName(@PathVariable("name") String name) {
+        return Response.handledWith(mockEmployeeService.getEmployeesByName(name));
+    }
+
+    @GetMapping("/highestSalary")
+    public Response<Integer> getHighestSalaryOfEmployees() {
+        return Response.handledWith(mockEmployeeService.getHighestSalaryOfEmployees());
+    }
+
+    @GetMapping("/topTenHighestEarningEmployeeNames")
+    public Response<List<MockEmployee>> getTopTenHighestEarningEmployeeNames() {
+        return Response.handledWith(mockEmployeeService.getTopTenHighestEarningEmployeeNames());
+    }
+
     @PostMapping()
     public Response<MockEmployee> createEmployee(@Valid @RequestBody CreateMockEmployeeInput input) {
         return Response.handledWith(mockEmployeeService.create(input));
@@ -46,6 +61,10 @@ public class MockEmployeeController {
 
     @DeleteMapping()
     public Response<Boolean> deleteEmployee(@Valid @RequestBody DeleteMockEmployeeInput input) {
-        return Response.handledWith(mockEmployeeService.delete(input));
+        if(mockEmployeeService.delete(input)){
+            return Response.handledWith(mockEmployeeService.delete(input));
+        } else {
+            return Response.error("No employee found with name: " + input.getName());
+        }
     }
 }

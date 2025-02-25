@@ -5,8 +5,16 @@ plugins {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'net.datafaker:datafaker:2.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.mockito:mockito-core:4.0.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'
 }
 
 springBoot {
     mainClass = 'com.reliaquest.server.ServerApplication'
+}
+
+test {
+    useJUnitPlatform()
 }
